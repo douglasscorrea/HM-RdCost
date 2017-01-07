@@ -41,17 +41,6 @@
 #include "TComRdCost.h"
 #include "TComPic.h"
 
-//douglas begin
-extern FILE *rd1;
-extern FILE *rd2;
-extern FILE *rd3;
-extern FILE *rd4;
-extern FILE *rd5;
-extern FILE *rd6;
-
-extern int frameNumber;
-//douglas end
-
 //! \ingroup TLibCommon
 //! \{
 
@@ -104,18 +93,10 @@ Double TComRdCost::calcRdCost( UInt uiBits, Distortion uiDistortion, Bool bFlag,
 #else
     if (m_costMode != COST_STANDARD_LOSSY)
     {
-      //douglas begin
-      fprintf(rd1, "%d\n", frameNumber);
-      //cout << "RD-1 \n";
-      //douglas end
       dRdCost = (Double(uiDistortion) / dLambda) + Double(uiBits); // all lossless costs would have uiDistortion=0, and therefore this cost function can be used.
     }
     else
     {
-      //douglas begin
-      fprintf(rd2, "%d\n", frameNumber);
-      //cout << "RD-2 \n";
-      //douglas end
       dRdCost = (((Double)uiDistortion) + ((Double)uiBits * dLambda));
     }
 #endif
@@ -126,18 +107,10 @@ Double TComRdCost::calcRdCost( UInt uiBits, Distortion uiDistortion, Bool bFlag,
     {
       if (m_costMode != COST_STANDARD_LOSSY)
       {
-        //douglas begin
-        fprintf(rd3, "%d\n", frameNumber);
-        //cout << "RD-3 \n";
-        //douglas end
         dRdCost = ((Double(uiDistortion) * 65536) / dLambda) + Double(uiBits); // all lossless costs would have uiDistortion=0, and therefore this cost function can be used.
       }
       else
       {
-        //douglas begin
-        fprintf(rd4, "%d\n", frameNumber);
-        //cout << "RD-4 \n";
-        //douglas end
         dRdCost = floor(Double(uiDistortion) + (floor((Double(uiBits) * dLambda) + 0.5) / 65536.0)); // NOTE: RExt - Integer casts removed from here. This version should be identical to HM for 8- and 10-bit test conditions
       }
     }
@@ -148,18 +121,10 @@ Double TComRdCost::calcRdCost( UInt uiBits, Distortion uiDistortion, Bool bFlag,
 #else
       if (m_costMode != COST_STANDARD_LOSSY)
       {
-        //douglas begin
-        fprintf(rd5, "%d\n", frameNumber);
-        //cout << "RD-5 \n";
-        //douglas end
         dRdCost = (Double(uiDistortion) / dLambda) + Double(uiBits); // all lossless costs would have uiDistortion=0, and therefore this cost function can be used.
       }
       else
       {
-        //douglas begin
-        fprintf(rd6, "%d\n", frameNumber);
-        //cout << "RD-6 \n";
-        //douglas end
         dRdCost = floor(Double(uiDistortion) + (Double(uiBits) * dLambda) + 0.5); // NOTE: RExt - Integer casts removed from here. This version should be identical to HM for 8- and 10-bit test conditions
       }
 #endif

@@ -40,14 +40,6 @@
 #include "TAppEncTop.h"
 #include "TAppCommon/program_options_lite.h"
 
-//douglas begin
-FILE *rd1;
-FILE *rd2;
-FILE *rd3;
-FILE *rd4;
-FILE *rd5;
-FILE *rd6;
-//douglas end
 
 //! \ingroup TAppEncoder
 //! \{
@@ -69,15 +61,6 @@ int main(int argc, char* argv[])
   fprintf( stdout, NVM_COMPILEDBY );
   fprintf( stdout, NVM_BITS );
   fprintf( stdout, "\n\n" );
-  
-  //douglas begin
-  rd1 = fopen("rd1.txt", "w");
-  rd2 = fopen("rd2.txt", "w");
-  rd3 = fopen("rd3.txt", "w");
-  rd4 = fopen("rd4.txt", "w");
-  rd5 = fopen("rd5.txt", "w");
-  rd6 = fopen("rd6.txt", "w");
-  //douglas end
 
   // create application encoder class
   cTAppEncTop.create();

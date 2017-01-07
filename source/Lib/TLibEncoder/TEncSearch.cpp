@@ -44,6 +44,12 @@
 #include <math.h>
 #include <limits>
 
+//douglas begin
+#include <sys/time.h>
+#include <sys/types.h>
+#include <time.h>
+//douglas end
+
 
 //! \ingroup TLibEncoder
 //! \{
@@ -1252,10 +1258,18 @@ Void TEncSearch::xIntraCodingTUBlock(       TComYuv*    pcOrgYuv,
 #ifdef DEBUG_STRING
   if ( (uiAbsSum > 0) || (DebugOptionList::DebugString_InvTran.getInt()&debugPredModeMask) )
 #else
+  //douglas begin
+  timespec time1, time2;
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
+  struct timespec start = timer_start();
+  //douglas end
+  
   if ( uiAbsSum > 0 )
 #endif
   {
+
     m_pcTrQuant->invTransformNxN ( rTu, compID, piResi, uiStride, pcCoeff, cQP DEBUG_STRING_PASS_INTO_OPTIONAL(&sDebug, (DebugOptionList::DebugString_InvTran.getInt()&debugPredModeMask)) );
+
   }
   else
   {
@@ -1267,6 +1281,11 @@ Void TEncSearch::xIntraCodingTUBlock(       TComYuv*    pcOrgYuv,
       pResi += uiStride;
     }
   }
+  //douglas begin
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
+  long time_elapsed_nanos = timer_end(start);
+  cout << pcCU->getPic()->getPOC() << " - intra > " << diff(time1,time2).tv_sec << ":"<<diff(time1,time2).tv_nsec << " - " << time_elapsed_nanos << endl;
+  //douglas end
 
 
   //===== reconstruction =====
@@ -5142,9 +5161,20 @@ Void TEncSearch::xEstimateResidualQT( TComYuv    *pcResi,
                 currCompBits = m_pcEntropyCoder->getNumberOfWrittenBits();
 
                 pcResiCurrComp = m_pcQTTempTComYuv[uiQTTempAccessLayer].getAddrPix( compID, tuCompRect.x0, tuCompRect.y0 );
-
+                
+                //douglas begin
+                timespec time1, time2;
+                clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
+                struct timespec start = timer_start();
+                //douglas end
+                
                 m_pcTrQuant->invTransformNxN( TUIterator, compID, pcResiCurrComp, m_pcQTTempTComYuv[uiQTTempAccessLayer].getStride(compID), currentCoefficients, cQP DEBUG_STRING_PASS_INTO_OPTIONAL(&sSingleStringTest, (DebugOptionList::DebugString_InvTran.getInt()&debugPredModeMask)) );
-
+                
+                //douglas begin
+                clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
+                long time_elapsed_nanos = timer_end(start);
+                cout << pcCU->getPic()->getPOC() << " - inter > " << diff(time1,time2).tv_sec << ":"<<diff(time1,time2).tv_nsec << " - " << time_elapsed_nanos << endl;
+                //douglas end
                 if (bUseCrossCPrediction)
                 {
                   TComTrQuant::crossComponentPrediction(TUIterator,
