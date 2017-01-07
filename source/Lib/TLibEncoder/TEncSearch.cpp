@@ -48,6 +48,8 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <time.h>
+
+int recTime = 0;
 //douglas end
 
 
@@ -1261,7 +1263,7 @@ Void TEncSearch::xIntraCodingTUBlock(       TComYuv*    pcOrgYuv,
   //douglas begin
   timespec time1, time2;
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
-  struct timespec start = timer_start();
+  //struct timespec start = timer_start();
   //douglas end
   
   if ( uiAbsSum > 0 )
@@ -1283,8 +1285,10 @@ Void TEncSearch::xIntraCodingTUBlock(       TComYuv*    pcOrgYuv,
   }
   //douglas begin
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
-  long time_elapsed_nanos = timer_end(start);
-  cout << pcCU->getPic()->getPOC() << " - intra > " << diff(time1,time2).tv_sec << ":"<<diff(time1,time2).tv_nsec << " - " << time_elapsed_nanos << endl;
+  //long time_elapsed_nanos = timer_end(start);
+  //cout << pcCU->getPic()->getPOC() << " - intra > " << diff(time1,time2).tv_sec << ":"<<diff(time1,time2).tv_nsec << " - " /*<< time_elapsed_nanos*/ << endl;
+  recTime = (int) diff(time1, time2).tv_nsec;
+  //cout << recTime << endl;
   //douglas end
 
 
@@ -5165,15 +5169,17 @@ Void TEncSearch::xEstimateResidualQT( TComYuv    *pcResi,
                 //douglas begin
                 timespec time1, time2;
                 clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
-                struct timespec start = timer_start();
+                //struct timespec start = timer_start();
                 //douglas end
                 
                 m_pcTrQuant->invTransformNxN( TUIterator, compID, pcResiCurrComp, m_pcQTTempTComYuv[uiQTTempAccessLayer].getStride(compID), currentCoefficients, cQP DEBUG_STRING_PASS_INTO_OPTIONAL(&sSingleStringTest, (DebugOptionList::DebugString_InvTran.getInt()&debugPredModeMask)) );
                 
                 //douglas begin
                 clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
-                long time_elapsed_nanos = timer_end(start);
-                cout << pcCU->getPic()->getPOC() << " - inter > " << diff(time1,time2).tv_sec << ":"<<diff(time1,time2).tv_nsec << " - " << time_elapsed_nanos << endl;
+                //long time_elapsed_nanos = timer_end(start);
+                //cout << pcCU->getPic()->getPOC() << " - inter > " << diff(time1,time2).tv_sec << ":"<<diff(time1,time2).tv_nsec << " - " /*<< time_elapsed_nanos*/ << endl;
+                recTime = (int) diff(time1, time2).tv_nsec;
+                //cout << recTime << endl;
                 //douglas end
                 if (bUseCrossCPrediction)
                 {

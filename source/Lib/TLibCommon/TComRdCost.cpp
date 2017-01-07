@@ -41,6 +41,10 @@
 #include "TComRdCost.h"
 #include "TComPic.h"
 
+//douglas begin
+extern int recTime;
+//douglas end
+
 //! \ingroup TLibCommon
 //! \{
 
