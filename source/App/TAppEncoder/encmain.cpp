@@ -40,7 +40,9 @@
 #include "TAppEncTop.h"
 #include "TAppCommon/program_options_lite.h"
 
-
+//douglas begin
+FILE *traceMatlab;
+//douglas end
 //! \ingroup TAppEncoder
 //! \{
 
@@ -54,6 +56,10 @@ int main(int argc, char* argv[])
 {
   TAppEncTop  cTAppEncTop;
 
+  //douglas begin
+  traceMatlab = fopen("traceMatlab.csv", "w");
+  //douglas end
+  
   // print information
   fprintf( stdout, "\n" );
   fprintf( stdout, "HM software: Encoder Version [%s] (including RExt)", NV_VERSION );
